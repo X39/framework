@@ -1,0 +1,108 @@
+#ifdef G_LIST_CONCAT
+    #ERROR G_LIST_CONCAT should not be defined.
+#else
+	#define G_LIST_CONCAT_(A,B) A ## B
+    #define G_LIST_CONCAT(A,B) G_LIST_CONCAT_(A,B)
+#endif
+
+#include <malloc.h>
+
+G_LIST_CONCAT(p_,G_LIST_NAME) G_LIST_CONCAT(G_LIST_NAME,_create)(void)
+{
+	G_LIST_CONCAT(p_,G_LIST_NAME) list = malloc(sizeof(G_LIST_NAME));
+	if (list == NULL)
+	{
+		return NULL;
+	}
+	list->top = 0;
+	list->size = 0;
+	list->data = 0;
+	return list;
+}
+void G_LIST_CONCAT(G_LIST_NAME,_destroy)(G_LIST_CONCAT(p_,G_LIST_NAME) list)
+{
+	if (list == NULL)
+	{
+		return;
+	}
+    G_LIST_CODE_DESTROY;
+	if (list->size > 0)
+	{
+		free(list->data);
+	}
+	free(list);
+	return true;
+}
+bool G_LIST_CONCAT(G_LIST_NAME,_grow)(G_LIST_CONCAT(p_,G_LIST_NAME) list)
+{
+	G_LIST_INNERTYPE * tmp;
+	unsigned int newsize = list->size * 2;
+	if (newsize < list->size)
+	{ // Integer Overflow
+		return false;
+	}
+	if (list->size == 0)
+	{
+		list->data = malloc(sizeof(G_LIST_INNERTYPE));
+		if (list->data == NULL)
+		{
+			return false;
+		}
+		list->size = 1;
+		return true;
+	}
+	else
+	{
+		tmp = realloc(list->data, sizeof(G_LIST_INNERTYPE) * newsize);
+		if (tmp == NULL)
+		{
+			return false;
+		}
+		list->data = tmp;
+		list->size = newsize;
+		return true;
+	}
+}
+bool G_LIST_CONCAT(G_LIST_NAME,_shrink)(G_LIST_CONCAT(p_,G_LIST_NAME) list)
+{
+	G_LIST_INNERTYPE * tmp;
+	if (list->size == 0)
+	{
+		return true;
+	}
+	else
+	{
+		tmp = realloc(list->data, sizeof(G_LIST_INNERTYPE) * list->top);
+		if (tmp == NULL)
+		{
+			return false;
+		}
+		list->data = tmp;
+		list->size = list->top;
+		return true;
+	}
+}
+bool G_LIST_CONCAT(G_LIST_NAME,_push)(G_LIST_CONCAT(p_,G_LIST_NAME) list, G_LIST_INNERTYPE val)
+{
+	if (list->top == list->size && !G_LIST_CONCAT(G_LIST_NAME,_grow)(list))
+	{
+		return false;
+	}
+	list->data[list->top] = val;
+	list->top++;
+	return true;
+}
+bool G_LIST_CONCAT(G_LIST_NAME,_pop)(G_LIST_CONCAT(p_,G_LIST_NAME) list, G_LIST_INNERTYPE * out)
+{
+	if (list->top == 0)
+	{
+		return false;
+	}
+    if (out)
+    {
+        *out = list->data[list->top--];
+    }
+    return true;
+}
+
+#undef G_LIST_CONCAT

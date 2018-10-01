@@ -1,0 +1,43 @@
+// The actual name of the list
+#ifndef G_LIST_NAME
+    #error G_LIST_NAME is a required macro.
+#endif
+
+// The actual inner datatype of the list
+#ifndef G_LIST_INNERTYPE
+    #error G_LIST_INNERTYPE is a required macro.
+#endif
+
+// Optional
+// Custom _destroy handling. Executed before everything else.
+// List will be available in `list` parameter.
+#ifndef G_LIST_CODE_DESTROY
+    #define G_LIST_CODE_DESTROY
+#endif
+
+
+#include <stdbool.h>
+
+#ifdef G_LIST_CONCAT
+    #ERROR G_LIST_CONCAT should not be defined.
+#else
+	#define G_LIST_CONCAT_(A,B) A ## B
+    #define G_LIST_CONCAT(A,B) G_LIST_CONCAT_(A,B)
+#endif
+
+typedef struct {
+    G_LIST_INNERTYPE * data;
+    unsigned int top;
+    unsigned int size;
+} G_LIST_NAME;
+
+typedef G_LIST_NAME * G_LIST_CONCAT(p_,G_LIST_NAME);
+
+G_LIST_CONCAT(p_,G_LIST_NAME) G_LIST_CONCAT(G_LIST_NAME,_create)(void);
+void G_LIST_CONCAT(G_LIST_NAME,_destroy)(G_LIST_CONCAT(p_,G_LIST_NAME));
+bool G_LIST_CONCAT(G_LIST_NAME,_grow)(G_LIST_CONCAT(p_,G_LIST_NAME));
+bool G_LIST_CONCAT(G_LIST_NAME,_shrink)(G_LIST_CONCAT(p_,G_LIST_NAME));
+bool G_LIST_CONCAT(G_LIST_NAME,_push)(G_LIST_CONCAT(p_,G_LIST_NAME), G_LIST_INNERTYPE);
+bool G_LIST_CONCAT(G_LIST_NAME,_pop)(G_LIST_CONCAT(p_,G_LIST_NAME), G_LIST_NAME *);
+
+#undef G_LIST_CONCAT
