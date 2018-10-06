@@ -27,7 +27,7 @@ consoleref get_console(void)
 	return GetStdHandle(STD_OUTPUT_HANDLE);
 }
 
-void set_console_tiles(consoleref console, const tile** tarr, dimensions dim)
+void set_console_tiles(consoleref console, const tile* tarr, dimensions dim)
 {
 #if defined(_WIN32)
 	COORD dwBufferSize = { dim.width, dim.height };
@@ -39,8 +39,8 @@ void set_console_tiles(consoleref console, const tile** tarr, dimensions dim)
 	{
 		for (unsigned int y = 0; y < dim.height; y++)
 		{
-			buffer[y * dim.width + x].Char.AsciiChar = tarr[y][x].icon;
-			buffer[y * dim.width + x].Attributes = tarr[y][x].color;
+			buffer[y * dim.width + x].Char.AsciiChar = tarr[y * dim.width + x].icon;
+			buffer[y * dim.width + x].Attributes = tarr[y * dim.width + x].color;
 		}
 	}
 	WriteConsoleOutput(console, buffer, dwBufferSize, dwBufferCoord, &rcRegion);

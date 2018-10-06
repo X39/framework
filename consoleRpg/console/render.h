@@ -9,6 +9,8 @@ typedef struct
 	unsigned int height;
 } dimensions;
 
+#define DIMENSIONS_COMPARE(A,B) ((A).width == (B).width && (A).height == (B).height)
+
 
 #if defined(_WIN32)
 #include <Windows.h>
@@ -19,4 +21,4 @@ typedef HANDLE consoleref;
 
 dimensions get_dimensions(void);
 consoleref get_console(void);
-void set_console_tiles(consoleref console, const tile** tarr, dimensions dim);
+void set_console_tiles(consoleref console, const tile* tarr, dimensions dim);

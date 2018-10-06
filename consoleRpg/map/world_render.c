@@ -4,54 +4,37 @@
 #include <malloc.h>
 
 
-tile** world_render_create_buff(p_world w)
+tile* world_render_create_buff(p_world w)
 {
 	if (w->width == 0 || w->height == 0)
 	{
 		return NULL;
 	}
-	tile** buff = malloc(sizeof(tile*) * (w->height + 1));
+	tile** buff = malloc(sizeof(tile) * (w->height * w->width));
 	if (buff == NULL)
 	{
 		return NULL;
 	}
-	for (unsigned int i = 0; i < w->height; i++)
-	{
-		buff[i] = malloc(sizeof(tile) * w->width);
-		buff[i][w->width].color = -1;
-		buff[i][w->width].icon = '\0';
-		if (buff[i] == NULL)
-		{
-			for (; i != ~0; i--)
-			{
-				free(buff[i]);
-			}
-			return NULL;
-		}
-	}
-	buff[w->height] = NULL;
 	world_render_clear_buff(w, buff);
 	return buff;
 }
-void world_render_clear_buff(p_world w, tile** buff)
+void world_render_clear_buff(p_world w, tile* buff)
 {
-	for (unsigned int i = 0; i < w->height; i++)
-		for (unsigned int j = 0; j < w->width; j++)
-		{
-			buff[i][j].icon = ' ';
-			buff[i][j].color = 0;
-		}
-}
-void world_render_destroy_buff(tile** buff)
-{
-	for (unsigned int i = 0; buff[i]; i++)
+	for (unsigned int y = 0; y < w->height; y++)
 	{
-		free(buff[i]);
+		for (unsigned int x = 0; x < w->width; x++)
+		{
+			buff[y * w->width + x].icon = ' ';
+			buff[y * w->width + x].color = 0;
+		}
 	}
+}
+void world_render_destroy_buff(tile* buff)
+{
 	free(buff);
 }
 
-void world_render(p_world w, p_tilelist tiles, tile** buff)
+void world_render(p_world w, p_tilelist tiles, tile* buff)
 {
 	if (w->width == 0 || w->height == 0)
 	{
@@ -65,19 +48,8 @@ void world_render(p_world w, p_tilelist tiles, tile** buff)
 		{
 			continue;
 		}
-		buff[ent->posy][ent->posx] = tiles->data[ent->tileid];
+		buff[ent->posy * w->width + ent->posx] = tiles->data[ent->tileid];
 	}
 	dimensions dim = { w->width, w->height };
 	set_console_tiles(get_console(), buff, dim);
-	//char* linebuff = alloca(sizeof(char) * (w->height * (w->width + 1) + 1));
-	//linebuff[w->height * (w->width + 1)] = '\0';
-	//for (unsigned int i = 0, j = 0; i < w->height; i++)
-	//{
-	//	for (j = 0; j < w->width; j++)
-	//	{
-	//		linebuff[i * w->width + j + i] = buff[i][j].icon;
-	//	}
-	//	linebuff[i * w->width + j + i] = '\n';
-	//}
-	//printf("%s", linebuff);
 }

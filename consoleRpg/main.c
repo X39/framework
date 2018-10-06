@@ -111,7 +111,7 @@ int main(int argc, char** argv)
 
 	world->width = 120;
 	world->height = 30;
-	tile** buff = world_render_create_buff(world);
+	tile* buff = world_render_create_buff(world);
 	while (!exit)
 	{
 		world_render(world, tiles, buff);
