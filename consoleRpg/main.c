@@ -1,10 +1,10 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#include "key/keys_qwertz_german.h"
+#include "console/keys_qwertz_german.h"
 #include "map/world.h"
 #include "map/world_render.h"
-#include "map/tile.h"
+#include "console/tile.h"
 
 
 
@@ -88,8 +88,8 @@ int main(int argc, char** argv)
 	bool exit = false;
 	p_world world = world_create();
 	p_tilelist tiles = tilelist_create();
-	tilelist_push(tiles, (tile) { 'X', 0 });
-	tilelist_push(tiles, (tile) { '@', 0 });
+	tilelist_push(tiles, (tile) { 'X', FOREGROUND_GRAY });
+	tilelist_push(tiles, (tile) { '@', FOREGROUND_CYAN });
 	p_entity ent;
 	for (i = 0; i < 100; i++)
 	{

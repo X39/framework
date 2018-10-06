@@ -18,39 +18,45 @@
     <ClCompile Include="main.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="key\keyhandling.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="map\entity.c">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="map\world.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="map\tile.c">
+    <ClCompile Include="map\world_render.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="map\world_render.c">
+    <ClCompile Include="console\keyhandling.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="console\render.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="console\tile.c">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="key\keyhandling.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="key\keys_qwertz_german.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="map\world.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="map\entity.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="map\tile.h">
+    <ClInclude Include="map\world_render.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="map\world_render.h">
+    <ClInclude Include="console\keyhandling.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="console\keys_qwertz_german.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="console\render.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="console\tile.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

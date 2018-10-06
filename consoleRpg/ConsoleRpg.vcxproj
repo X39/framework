@@ -115,18 +115,20 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="key\keyhandling.c" />
+    <ClCompile Include="console\keyhandling.c" />
+    <ClCompile Include="console\render.c" />
     <ClCompile Include="main.c" />
     <ClCompile Include="map\entity.c" />
-    <ClCompile Include="map\tile.c" />
+    <ClCompile Include="console\tile.c" />
     <ClCompile Include="map\world.c" />
     <ClCompile Include="map\world_render.c" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="key\keyhandling.h" />
-    <ClInclude Include="key\keys_qwertz_german.h" />
+    <ClInclude Include="console\render.h" />
+    <ClInclude Include="console\keyhandling.h" />
+    <ClInclude Include="console\keys_qwertz_german.h" />
     <ClInclude Include="map\entity.h" />
-    <ClInclude Include="map\tile.h" />
+    <ClInclude Include="console\tile.h" />
     <ClInclude Include="map\world.h" />
     <ClInclude Include="map\world_render.h" />
   </ItemGroup>

@@ -1,4 +1,5 @@
 #include "world_render.h"
+#include "../console/render.h"
 
 #include <malloc.h>
 
@@ -37,10 +38,8 @@ void world_render_clear_buff(p_world w, tile** buff)
 	for (unsigned int i = 0; i < w->height; i++)
 		for (unsigned int j = 0; j < w->width; j++)
 		{
-			if (buff[i][j].icon != ' ')
-			{
-				buff[i][j].icon = ' ';
-			}
+			buff[i][j].icon = ' ';
+			buff[i][j].color = 0;
 		}
 }
 void world_render_destroy_buff(tile** buff)
@@ -68,15 +67,17 @@ void world_render(p_world w, p_tilelist tiles, tile** buff)
 		}
 		buff[ent->posy][ent->posx] = tiles->data[ent->tileid];
 	}
-	char* linebuff = alloca(sizeof(char) * (w->height * (w->width + 1) + 1));
-	linebuff[w->height * (w->width + 1)] = '\0';
-	for (unsigned int i = 0, j = 0; i < w->height; i++)
-	{
-		for (j = 0; j < w->width; j++)
-		{
-			linebuff[i * w->width + j + i] = buff[i][j].icon;
-		}
-		linebuff[i * w->width + j + i] = '\n';
-	}
-	printf("%s", linebuff);
+	dimensions dim = { w->width, w->height };
+	set_console_tiles(get_console(), buff, dim);
+	//char* linebuff = alloca(sizeof(char) * (w->height * (w->width + 1) + 1));
+	//linebuff[w->height * (w->width + 1)] = '\0';
+	//for (unsigned int i = 0, j = 0; i < w->height; i++)
+	//{
+	//	for (j = 0; j < w->width; j++)
+	//	{
+	//		linebuff[i * w->width + j + i] = buff[i][j].icon;
+	//	}
+	//	linebuff[i * w->width + j + i] = '\n';
+	//}
+	//printf("%s", linebuff);
 }

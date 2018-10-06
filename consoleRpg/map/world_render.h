@@ -1,6 +1,6 @@
 #pragma once
 #include "world.h"
-#include "tile.h"
+#include "../console/tile.h"
 
 // ToDo: Introduce proper world-renderer that will allow for stuff
 //       like viewport.
