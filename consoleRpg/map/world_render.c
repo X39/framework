@@ -41,6 +41,18 @@ void world_render(p_world w, p_tilelist tiles, tile* buff)
 		return;
 	}
 	world_render_clear_buff(w, buff);
+	for (unsigned int x = 0; x < w->width; x++)
+	{
+		for (unsigned int y = 0; y < w->height; y++)
+		{
+			unsigned int index = WORLD_INDEX(w, x, y);
+			if (w->blocks[index].tileid == (unsigned int)~0)
+			{
+				continue;
+			}
+			buff[index] = tiles->data[w->blocks[index].tileid];
+		}
+	}
 	for (unsigned int i = 0; i < w->entities->top; i++)
 	{
 		p_entity ent = w->entities->data[i];

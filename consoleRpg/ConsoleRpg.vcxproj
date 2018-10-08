@@ -127,6 +127,7 @@
     <ClInclude Include="console\render.h" />
     <ClInclude Include="console\keyhandling.h" />
     <ClInclude Include="console\keys_qwertz_german.h" />
+    <ClInclude Include="map\block.h" />
     <ClInclude Include="map\entity.h" />
     <ClInclude Include="console\tile.h" />
     <ClInclude Include="map\world.h" />

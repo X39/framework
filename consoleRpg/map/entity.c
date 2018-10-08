@@ -24,4 +24,3 @@ void entity_destroy(p_entity ent)
 {
 	free(ent);
 }
-

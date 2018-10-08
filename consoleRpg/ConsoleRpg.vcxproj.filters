@@ -59,6 +59,9 @@
     <ClInclude Include="console\tile.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="map\block.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Text Include="generic\g_list.h.txt" />
