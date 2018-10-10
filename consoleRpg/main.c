@@ -61,30 +61,47 @@ bool cb_key_move(keycode k, void* data)
 
 int main(int argc, char** argv)
 {
+	const int worldsize_x = 200;
+	const int worldsize_y = 200;
+	const int entity_count = 200;
+	const int viewport_dim_x = 40;
+	const int viewport_dim_y = 20;
+
 	int i;
 	p_keylist klist = keylist_create();
+	viewport view = {
+		0,
+		0,
+		viewport_dim_x,
+		viewport_dim_y
+	};
 	bool exit = false;
 	p_world world = world_create();
-	world_resize(world, 120, 20);
+	world_resize(world, worldsize_x, worldsize_y);
 	p_tilelist tiles = tilelist_create();
-	/* 0 */ tilelist_push(tiles, (tile) { 'X', FOREGROUND_GRAY });
-	/* 1 */ tilelist_push(tiles, (tile) { '@', FOREGROUND_CYAN });
-	/* 2 */ tilelist_push(tiles, (tile) { (char)218, FOREGROUND_GREEN }); //Top-Left
-	/* 3 */ tilelist_push(tiles, (tile) { (char)217, FOREGROUND_GREEN }); //Bot-Right
-	/* 4 */ tilelist_push(tiles, (tile) { (char)192, FOREGROUND_GREEN }); //Bot-Left
-	/* 5 */ tilelist_push(tiles, (tile) { (char)191, FOREGROUND_GREEN }); //Top-Right
-	/* 6 */ tilelist_push(tiles, (tile) { (char)179, FOREGROUND_GREEN }); //Straight-UpDown
-	/* 7 */ tilelist_push(tiles, (tile) { (char)196, FOREGROUND_GREEN }); //Straight-LeftRight
+	/* 0 */ tilelist_push(tiles, (tile) { 'X', FOREGROUND_BLACK | BACKGROUND_GRAY  });
+	/* 1 */ tilelist_push(tiles, (tile) { '@', FOREGROUND_YELLOW | BACKGROUND_GRAY  });
+	/* 2 */ tilelist_push(tiles, (tile) { (char)218, FOREGROUND_GREEN | BACKGROUND_GRAY }); //Top-Left
+	/* 3 */ tilelist_push(tiles, (tile) { (char)217, FOREGROUND_GREEN | BACKGROUND_GRAY }); //Bot-Right
+	/* 4 */ tilelist_push(tiles, (tile) { (char)192, FOREGROUND_GREEN | BACKGROUND_GRAY }); //Bot-Left
+	/* 5 */ tilelist_push(tiles, (tile) { (char)191, FOREGROUND_GREEN | BACKGROUND_GRAY }); //Top-Right
+	/* 6 */ tilelist_push(tiles, (tile) { (char)179, FOREGROUND_GREEN | BACKGROUND_GRAY }); //Straight-UpDown
+	/* 7 */ tilelist_push(tiles, (tile) { (char)196, FOREGROUND_GREEN | BACKGROUND_GRAY }); //Straight-LeftRight
 	p_entity ent;
-	for (i = 0; i < 100; i++)
+	for (i = 0; i < entity_count - 1; i++)
 	{
 		ent = entity_create();
 		ent->tileid = 0;
-		ent->posx = rand() % 120;
-		ent->posy = rand() % 30;
+		ent->posx = rand() % worldsize_x;
+		ent->posy = rand() % worldsize_y;
 		entitylist_push(world->entities, ent);
 	}
+	ent = entity_create();
+	ent->tileid = 0;
+	ent->posx = worldsize_x / 2;
+	ent->posy = worldsize_y / 2;
 	ent->tileid = 1;
+	entitylist_push(world->entities, ent);
 
 	for (unsigned int x = 0; x < world->width; x++)
 	{
@@ -113,13 +130,14 @@ int main(int argc, char** argv)
 	keylist_push(klist, KEY_RIGHTARROW, cb_key_move, &move_data);
 	keylist_push(klist, KEY_LEFTARROW, cb_key_move, &move_data);
 
-
-	tile* buff = world_render_create_buff(world);
+	tile* buff = world_render_create_buff(&view);
 	while (!exit)
 	{
-		world_render(world, tiles, buff);
+		view.x = ent->posx - viewport_dim_x / 2;
+		view.y = ent->posy - viewport_dim_y / 2;
+		world_render(world, tiles, buff, &view);
 		keylist_handle(klist, get_key());
-		system("cls");
+		//system("cls");
 	}
 
 	keylist_destroy(klist);
