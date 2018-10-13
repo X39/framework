@@ -7,7 +7,7 @@
 #error NO IMP
 #endif
 
-dimensions get_dimensions(void)
+dimensions get_console_dimensions(void)
 {
 	dimensions dim;
 
@@ -25,6 +25,22 @@ dimensions get_dimensions(void)
 consoleref get_console(void)
 {
 	return GetStdHandle(STD_OUTPUT_HANDLE);
+}
+tile* create_console_buffer(void)
+{
+	dimensions dim = get_console_dimensions();
+	return malloc(sizeof(tile) * (dim.height * dim.width));
+}
+void clear_console_buffer(dimensions dim, tile* buff)
+{
+	for (unsigned int y = 0; y < dim.height; y++)
+	{
+		for (unsigned int x = 0; x < dim.width; x++)
+		{
+			buff[y * dim.width + x].icon = ' ';
+			buff[y * dim.width + x].color = BACKGROUND_BLACK;
+		}
+	}
 }
 
 void set_console_tiles(consoleref console, const tile* tarr, dimensions dim)

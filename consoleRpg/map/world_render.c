@@ -4,37 +4,7 @@
 #include <malloc.h>
 
 
-tile* world_render_create_buff(p_viewport view)
-{
-	if (view->w == 0 || view->h == 0)
-	{
-		return NULL;
-	}
-	tile** buff = malloc(sizeof(tile) * (view->h * view->w));
-	if (buff == NULL)
-	{
-		return NULL;
-	}
-	world_render_clear_buff(view, buff);
-	return buff;
-}
-void world_render_clear_buff(p_viewport view, tile* buff)
-{
-	for (unsigned int y = 0; y < view->h; y++)
-	{
-		for (unsigned int x = 0; x < view->w; x++)
-		{
-			buff[y * view->w + x].icon = ' ';
-			buff[y * view->w + x].color = BACKGROUND_GRAY;
-		}
-	}
-}
-void world_render_destroy_buff(tile* buff)
-{
-	free(buff);
-}
-
-void world_render(p_world w, p_tilelist tiles, tile* buff, p_viewport view)
+void world_render(p_world w, p_tilelist tiles, tile* buff, unsigned int buffw, p_viewport view)
 {
 	if (w->width == 0 || w->height == 0)
 	{
@@ -45,12 +15,21 @@ void world_render(p_world w, p_tilelist tiles, tile* buff, p_viewport view)
 	if (view->y + view->h > w->height) { view->y = w->height - view->h; }
 	if (view->y < 0) { view->y = 0; }
 
-	world_render_clear_buff(view, buff);
+	//Set background to gray
+	for (unsigned int y = 0; y < view->h; y++)
+	{
+		for (unsigned int x = 0; x < view->w; x++)
+		{
+			buff[y * buffw + x].icon = ' ';
+			buff[y * buffw + x].color = BACKGROUND_GRAY;
+		}
+	}
+
 	for (unsigned int x = view->x; x < view->x + view->w; x++)
 	{
 		for (unsigned int y = view->y; y < view->y + view->h; y++)
 		{
-			unsigned int viewindex = VIEW_INDEX(view, x, y);
+			unsigned int viewindex = VIEW_INDEX(view, buffw, x, y);
 			unsigned int worldindex = WORLD_INDEX(w, x, y);
 			if (w->blocks[worldindex].tileid == (unsigned int)~0)
 			{
@@ -72,8 +51,6 @@ void world_render(p_world w, p_tilelist tiles, tile* buff, p_viewport view)
 		{
 			continue;
 		}
-		buff[(ent->posy - view->y) * view->w + (ent->posx - view->x)] = tiles->data[ent->tileid];
+		buff[(ent->posy - view->y) * buffw + (ent->posx - view->x)] = tiles->data[ent->tileid];
 	}
-	dimensions dim = { view->w, view->h};
-	set_console_tiles(get_console(), buff, dim);
 }

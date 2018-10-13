@@ -5,6 +5,8 @@
 #include "map/world.h"
 #include "map/world_render.h"
 #include "console/tile.h"
+#include "console/control.h"
+#include "console/render.h"
 
 
 
@@ -61,8 +63,8 @@ bool cb_key_move(keycode k, void* data)
 
 int main(int argc, char** argv)
 {
-	const int worldsize_x = 200;
-	const int worldsize_y = 200;
+	const int worldsize_x = 100;
+	const int worldsize_y = 100;
 	const int entity_count = 200;
 	const int viewport_dim_x = 40;
 	const int viewport_dim_y = 20;
@@ -92,8 +94,8 @@ int main(int argc, char** argv)
 	{
 		ent = entity_create();
 		ent->tileid = 0;
-		ent->posx = rand() % worldsize_x;
-		ent->posy = rand() % worldsize_y;
+		ent->posx = rand() % (worldsize_x - 2) + 1;
+		ent->posy = rand() % (worldsize_y - 2) + 1;
 		entitylist_push(world->entities, ent);
 	}
 	ent = entity_create();
@@ -130,14 +132,24 @@ int main(int argc, char** argv)
 	keylist_push(klist, KEY_RIGHTARROW, cb_key_move, &move_data);
 	keylist_push(klist, KEY_LEFTARROW, cb_key_move, &move_data);
 
-	tile* buff = world_render_create_buff(&view);
+	tile* buff = create_console_buffer();
+	dimensions dim = get_console_dimensions();
+	p_control tb_test = control_create_textblock(1, viewport_dim_y + 1, dim.width - 2, dim.height - viewport_dim_y - 2, "TEST1\nTEST2\nTEST3\nTEST4\nTEST5\nTEST6\nTEST7");
+
 	while (!exit)
 	{
+		clear_console_buffer(dim, buff);
+		//Render Controls
+		tb_test->vtable.render(tb_test, buff, dim.width, dim.height);
+
+		//Render World
 		view.x = ent->posx - viewport_dim_x / 2;
 		view.y = ent->posy - viewport_dim_y / 2;
-		world_render(world, tiles, buff, &view);
+		world_render(world, tiles, buff, dim.width, &view);
+		set_console_tiles(get_console(), buff, dim);
 		keylist_handle(klist, get_key());
-		//system("cls");
+
+
 	}
 
 	keylist_destroy(klist);

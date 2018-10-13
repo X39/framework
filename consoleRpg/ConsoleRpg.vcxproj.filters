@@ -36,6 +36,9 @@
     <ClCompile Include="console\tile.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="console\control.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="map\world.h">
@@ -60,6 +63,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="map\block.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="console\control.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

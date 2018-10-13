@@ -19,6 +19,8 @@ typedef HANDLE consoleref;
 #error NO IMP
 #endif
 
-dimensions get_dimensions(void);
+dimensions get_console_dimensions(void);
 consoleref get_console(void);
+tile* create_console_buffer(void);
+void clear_console_buffer(dimensions, tile*);
 void set_console_tiles(consoleref console, const tile* tarr, dimensions dim);
